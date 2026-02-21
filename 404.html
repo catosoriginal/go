@@ -13,14 +13,21 @@
             // [ OLD METHOD! ] const hash = window.location.hash.slice(1);
 
             const segments = window.location.pathname.split('/').filter(Boolean);
+            let redirectKey;
 
-             var redirectKey = segments[-1]
-             if (redirectLinks[redirectKey]) {
-                 document.getElementById('mtext').textContent = 'Redirecting to ' + redirectLinks[redirectKey]
-                 window.location.href = redirectLinks[redirectKey]
-             } else {
-                 document.getElementById('mtext').textContent = 'Not Found.'
-             }
+            if (segments.length > 1 && segments.length < 3) {
+            redirectKey = segments[segments.length - 1];
+            } else {
+            redirectKey = segments[segments.length - 1];
+            }
+
+
+            if (redirectLinks[redirectKey]) {
+            document.getElementById('mtext').textContent = 'Redirecting to ' + redirectLinks[redirectKey];
+            window.location.href = redirectLinks[redirectKey];
+           } else {
+             document.getElementById('mtext').textContent = 'Not Found.';
+           }
         </script>
     </body>
 </html>
