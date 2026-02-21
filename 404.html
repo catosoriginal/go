@@ -18,7 +18,8 @@
             if (segments.length > 1 && segments.length < 3) {
             redirectKey = segments[segments.length - 1];
             } else {
-            redirectKey = segments[segments.length - 1];
+                document.getElementById('mtext').textContent = 'Not all arguments found.';
+            return
             }
 
 
