@@ -7,7 +7,6 @@
             const redirectLinks = {
                 'github': 'https://github.com/@catosoriginal',
                 'google': 'https://google.com/404',
-                'google': 'https://youtube.com'
             }
 
             // [ OLD METHOD! ] const path = window.location.pathname.split('/').pop();
@@ -15,36 +14,13 @@
 
             const segments = window.location.pathname.split('/').filter(Boolean);
 
-            if (segments.includes('g')) {
-                if (segments.indexOf("g") !== -1) {
-                    var redirectIndex = segments.indexOf("g")
-                    var redirectKey = segments[redirectIndex + 1]
-                    if (redirectLinks[redirectKey]) {
-                    document.getElementById('mtext').textContent = 'Redirecting to ' + redirectLinks[redirectKey]
-                    window.location.href = redirectLinks[redirectKey]
-                }
-                } else if (links[segments.at(-1)]) {
-                    document.getElementById('mtext').textContent = 'Redirecting to ' + segments.at(-1)
-                    window.location.href = links[segments.at(-1)]
-                }
-                //
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+             var redirectKey = segments[-1]
+             if (redirectLinks[redirectKey]) {
+                 document.getElementById('mtext').textContent = 'Redirecting to ' + redirectLinks[redirectKey]
+                 window.location.href = redirectLinks[redirectKey]
+             } else {
+                 document.getElementById('mtext').textContent = 'Not Found.'
+             }
         </script>
     </body>
 </html>
