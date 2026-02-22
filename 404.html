@@ -3,10 +3,20 @@
 <body>
     <p id="mtext"></p>
     <script>
-        const redirectLinks = {
-            'github': 'https://github.com/@catosoriginal',
-            'google': 'https://google.com/',
-        }
+        let redirectLinks = {}
+
+        fetch("publiclinks.json")
+       .then(res => {
+        if (!res.ok) throw new Error("Не удалось загрузить JSON");
+        return res.json();
+      })
+     .then(data => {
+        redirectLinks = data;
+        console.log("Ссылки загружены:", redirectLinks);
+      })
+      .catch(err => {
+        console.error("Ошибка при загрузке JSON:", err);
+      });
 
         const segments = window.location.pathname.split('/').filter(Boolean);
         let redirectKey;
