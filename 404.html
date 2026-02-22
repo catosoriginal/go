@@ -14,6 +14,12 @@
 
             const segments = window.location.pathname.split('/').filter(Boolean);
             let redirectKey;
+            let query = window.location.search;
+            const params = new URLSearchParams(query);
+            const password = params.get("p");
+            if (!password) {
+            password = "none";
+}
 
            if (segments.length > 1 && segments.length < 3) {
             redirectKey = segments[segments.length - 1];
@@ -28,6 +34,37 @@
             document.getElementById('mtext').textContent = 'Redirecting to ' + redirectLinks[redirectKey];
             window.location.href = redirectLinks[redirectKey];
            } else {
+             const serverlink = "https://go-server-idym.onrender.com/"
+             const data = {
+              key: redirectKey,
+              password: password
+             };
+
+             fetch(url, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+})
+.then(response => {
+    if (!response.ok) {
+        // Ошибка от сервера
+        return response.json().then(err => { throw err });
+    }
+    return response.json();
+})
+.then(result => {
+    console.log("Taked URL:", result.url);
+    document.getElementById('mtext').textContent = 'Redirecting to' + result.url;
+    window.location.href = result.url;
+})
+.catch(err => {
+    console.error("Request Error:", err.error);
+    document.getElementById('mtext').textContent = err.error;
+});
+             
+
              document.getElementById('mtext').textContent = 'Not Found.';
            }
         </script>
