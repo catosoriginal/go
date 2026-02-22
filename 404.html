@@ -25,6 +25,7 @@
             document.getElementById('mtext').textContent = 'Redirecting to ' + redirectLinks[redirectKey];
             window.location.href = redirectLinks[redirectKey];
         } else {
+            console.log("bro")
             const serverlink = "https://go-server-idym.onrender.com/geturl";
             const data = { key: redirectKey, password: password };
 
