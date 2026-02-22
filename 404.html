@@ -1,73 +1,38 @@
-<!DOCTYPE html>
-<html lang="eng"> 
-    <body>
-        <p id="mtext"></p>
-        <script>
-            console.log("1")
+from flask import Flask, request, jsonify
 
-            const redirectLinks = {
-                'github': 'https://github.com/@catosoriginal',
-                'google': 'https://google.com/',
-            }
+app = Flask(__name__)
 
-            // [ OLD METHOD! ] const path = window.location.pathname.split('/').pop();
-            // [ OLD METHOD! ] const hash = window.location.hash.slice(1);
+secreturls = {"lm": "https://google.com"}
+secretpasswords = {"lm": "pasta"}
 
-            const segments = window.location.pathname.split('/').filter(Boolean);
-            let redirectKey;
-            let query = window.location.search;
-            const params = new URLSearchParams(query);
-            let password = params.get("p");
-            if (!password) {
-            password = "none";
-}
+@app.route("/")
+def index():
+    return "Hello World!"
 
-           if (segments.length > 1 && segments.length < 3) {
-            redirectKey = segments[segments.length - 1];
-            } else if (segments.length === 1) {
-            redirectKey = segments[0];
-            } else {
-            redirectKey = "ERROR";
-            }
+@app.route("/geturl", methods=["POST"])
+def get_url():
+    try:
+        data = request.get_json()
+        key = data.get("key") if data else None
+        password = data.get("password") if data else None
 
+        if not key:
+            return jsonify({"error": "Wrong arguments."}), 400
 
-            if (redirectLinks[redirectKey]) {
-            document.getElementById('mtext').textContent = 'Redirecting to ' + redirectLinks[redirectKey];
-            window.location.href = redirectLinks[redirectKey];
-           } else {
-             const serverlink = "https://go-server-idym.onrender.com/"
-             const data = {
-              key: redirectKey,
-              password: password
-             };
+        if key not in secreturls:
+            return jsonify({"error": "Invalid key."}), 403
 
-             fetch(url, {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-})
-.then(response => {
-    if (!response.ok) {
-        // Ошибка от сервера
-        return response.json().then(err => { throw err });
-    }
-    return response.json();
-})
-.then(result => {
-    console.log("Taked URL:", result.url);
-    document.getElementById('mtext').textContent = 'Redirecting to' + result.url;
-    window.location.href = result.url;
-})
-.catch(err => {
-    console.error("Request Error:", err.error);
-    document.getElementById('mtext').textContent = err.error;
-});
-             
+        if key in secretpasswords:
+            if not password:
+                return jsonify({"error": "Wrong arguments."}), 400
+            if password != secretpasswords[key]:
+                return jsonify({"error": "Wrong password."}), 403
 
-             document.getElementById('mtext').textContent = 'Not Found.';
-           }
-        </script>
-    </body>
-</html>
+        return jsonify({"url": secreturls[key]})
+
+    except Exception as e:
+        print("Server Error:", e)
+        return jsonify({"error": "Server Error"}), 500
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
