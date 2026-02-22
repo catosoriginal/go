@@ -1,42 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Documentation</title>
-  <style>
-  </style>
-</head>
-<main id="content">
-    Loading content...
-  </main>
-<body>
-    <iframe src="nav.html" ></iframe>
-    <iframe src="header.html" ></iframe>
-  <nav>
-    <div>
-      <div class="nav-title">Documentations</div>
-    </div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentations</title>
+<style>
+  /* Общие стили */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #0b0b0b;
+    color: #fff;
+  }
 
+  /* HEADER */
+  header {
+    height: 60px;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  header h1 {
+    font-size: 20px;
+    opacity: 0.95;
+  }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  .hamburger div {
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    margin: 4px 0;
+    transition: 0.3s;
+  }
+
+  /* LAYOUT */
+  .container {
+    display: flex;
+    min-height: calc(100vh - 60px);
+  }
+
+  nav {
+    width: 240px;
+    background-color: #000;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+  }
+  nav.hidden { transform: translateX(-100%); }
+
+  .nav-title { font-size: 18px; margin-bottom: 20px; }
+
+  .nav-buttons a {
+    display: block;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border: 1px solid #fff;
+    border-radius: 999px;
+    text-decoration: none;
+    color: #fff;
+    text-align: center;
+  }
+  .nav-buttons a:hover { background-color: rgba(255,255,255,0.08); }
+
+  main {
+    flex: 1;
+    padding: 40px;
+    overflow-x: hidden;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      height: calc(100vh - 60px);
+      z-index: 10;
+      transform: translateX(-100%);
+    }
+    .hamburger { display: flex; }
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 60px);
+      background: rgba(0,0,0,0.5);
+      z-index: 5;
+    }
+    .overlay.show { display: block; }
+  }
+
+  /* Markdown basic styling */
+  main h1,h2,h3 { opacity: 0.95; margin-bottom: 10px; }
+  main p { line-height: 1.6; opacity: 0.85; margin-bottom: 10px; }
+  main code { background-color: #1a1a1a; padding: 2px 5px; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Documentations</h1>
+  <div class="hamburger" id="hamburger">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</header>
+
+<div class="container">
+  <nav id="nav">
+    <div class="nav-title">Menu</div>
     <div class="nav-buttons">
-      <a class="nav-button" id="docteleportbutton_EXAMPLE" href="#">EXAMPLE</a>
+      <a href="#">EXAMPLE</a>
+      <a href="#">EXAMPLE2</a>
+      <a href="#">EXAMPLE3</a>
     </div>
   </nav>
+  <main id="content">Loading content...</main>
+</div>
 
-  <script>
-    let docname = new URLSearchParams(window.location.search).get("docname");
-    if (docname) {
-      let parent = document.currentScript.parentElement.parentElement;
-      let mdfile = parent.pages[`${docname}.md`];
+<div class="overlay" id="overlay"></div>
 
-      const main = document.getElementById("content");
+<script>
+  // Hamburger toggle
+  const nav = document.getElementById("nav");
+  const hamburger = document.getElementById("hamburger");
+  const overlay = document.getElementById("overlay");
 
-      let listfileparent = document.currentScript.parentElement.parentElement
-      let listfile = parent.pages[`list.json`];
+  hamburger.addEventListener("click", () => {
+    nav.classList.toggle("hidden");
+    overlay.classList.toggle("show");
+  });
 
+  overlay.addEventListener("click", () => {
+    nav.classList.add("hidden");
+    overlay.classList.remove("show");
+  });
+
+  // Load markdown
+  const docname = new URLSearchParams(window.location.search).get("docname");
+  const main = document.getElementById("content");
+  if (docname) {
     fetch(`${docname}.md`)
-      .then(response => {
-        if (!response.ok) throw new Error("Markdown not found");
-        return response.text();
+      .then(resp => {
+        if (!resp.ok) throw new Error("Markdown not found");
+        return resp.text();
       })
       .then(text => {
         main.innerHTML = text.replace(/\n/g, "<br>");
@@ -44,8 +164,8 @@
       .catch(err => {
         main.textContent = "Error loading content: " + err;
       });
-    }
-  </script>
+  }
+</script>
 
 </body>
 </html>
