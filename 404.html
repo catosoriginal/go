@@ -16,7 +16,7 @@
             let redirectKey;
             let query = window.location.search;
             const params = new URLSearchParams(query);
-            const password = params.get("p");
+            let password = params.get("p");
             if (!password) {
             password = "none";
 }
