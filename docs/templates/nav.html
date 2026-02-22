@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <style>
+        body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #0b0b0b;
+      color: #ffffff;
+      display: flex;
+    }
+
+    /* LEFT NAV */
+    nav {
+      width: 240px;
+      height: 100vh;
+      background-color: #000000;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    /* NAV TITLE */
+    .nav-title {
+      font-size: 18px;
+      font-weight: normal;
+      letter-spacing: 0.5px;
+      opacity: 0.95;
+      margin-bottom: 20px;
+    }
+
+    /* BUTTON LIST */
+    .nav-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .nav-button {
+      padding: 10px 14px;
+      border: 1px solid #ffffff;
+      border-radius: 999px; /* круглая */
+      background-color: transparent;
+      color: #ffffff;
+      text-align: center;
+      font-size: 13px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-button:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    /* MAIN CONTENT */
+    main {
+      flex: 1;
+      padding: 40px;
+    }
+
+    main h1 {
+      font-size: 26px;
+      font-weight: normal;
+      margin: 0;
+      opacity: 0.9;
+    }
+  </style>
+  <body>
+     <nav>
+    <div>
+      <div class="nav-title">Documentations</div>
+    </div>
+
+    <div class="nav-buttons">
+      <a class="nav-button" href="#">EXAMPLE</a>
+      <a class="nav-button" href="#">EXAMPLE</a>
+      <a class="nav-button" href="#">EXAMPLE</a>
+    </div>
+  </nav>
+  </body>
+  </head>
+</html>

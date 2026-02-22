@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Documentation</title>
+  <style>
+  </style>
+</head>
+<main id="content">
+    Loading content...
+  </main>
+<body>
+    <iframe src="nav.html" ></iframe>
+    <iframe src="header.html" ></iframe>
+  <nav>
+    <div>
+      <div class="nav-title">Documentations</div>
+    </div>
+
+    <div class="nav-buttons">
+      <a class="nav-button" id="docteleportbutton_EXAMPLE" href="#">EXAMPLE</a>
+    </div>
+  </nav>
+
+  <script>
+    let docname = new URLSearchParams(window.location.search).get("docname");
+    if (docname) {
+      let parent = document.currentScript.parentElement.parentElement;
+      let mdfile = parent.pages[`${docname}.md`];
+
+      const main = document.getElementById("content");
+
+      let listfileparent = document.currentScript.parentElement.parentElement
+      let listfile = parent.pages[`list.json`];
+
+    fetch(`${docname}.md`)
+      .then(response => {
+        if (!response.ok) throw new Error("Markdown not found");
+        return response.text();
+      })
+      .then(text => {
+        main.innerHTML = text.replace(/\n/g, "<br>");
+      })
+      .catch(err => {
+        main.textContent = "Error loading content: " + err;
+      });
+    }
+  </script>
+
+</body>
+</html>
