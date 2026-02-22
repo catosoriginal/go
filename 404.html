@@ -7,15 +7,14 @@
 
         fetch("publiclinks.json")
        .then(res => {
-        if (!res.ok) throw new Error("Не удалось загрузить JSON");
+        if (!res.ok) throw new Error("Failed to load JSON");
         return res.json();
       })
      .then(data => {
         redirectLinks = data;
-        console.log("Ссылки загружены:", redirectLinks);
       })
       .catch(err => {
-        console.error("Ошибка при загрузке JSON:", err);
+        console.error("Error while loading JSON:", err);
       });
 
         const segments = window.location.pathname.split('/').filter(Boolean);
