@@ -47,7 +47,7 @@
             })
             .catch(err => {
                 console.error("Request Error:", err.error);
-                document.getElementById('mtext').textContent = err.error || "Not Found.";
+                document.getElementById('mtext').textContent = err.error;
             });
         }
     </script>
