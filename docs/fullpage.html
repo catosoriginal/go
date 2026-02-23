@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Documentations</title>
+<title id="title">Document1ations</title>
 <style>
   body {
     margin: 0;
@@ -55,30 +55,60 @@
 
   #header {
     text-align: center;
-    color: beige;
+    color: rgb(245, 245, 245);
     background-color: black;
     border-radius: 15px;
     padding: 20px;
     margin-bottom: 20px;
+    font-size:larger;
   }
+  
 </style>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+   let docname = new URLSearchParams(window.location.search).get("docname");
+   if (docname) {
+    document.getElementById("header").textContent = toString(docname)
+   }
+   document.getElementById("navbutton_EXAMPLE").style.display = "none"
+   fetch("https://catosoriginal.github.io/go/docs/list.json")
+   .then(res => {
+    if (!res.ok) throw new Error("Failed to load JSON");
+    return res.json();
+   })
+   .then(data => {
+    for (const item of data) {
+      if (item.listed == true) {
+        const cloneofbutton = document.getElementById("navbutton_EXAMPLE").cloneNode(true);
+        cloneofbutton.id = "navbutton_" + toString(item);
+        cloneofbutton.textContent = toString(item.displayname)
+        cloneofbutton.href = toString(item.link)
+        cloneofbutton.display = "block"
+        const navbuttonscontainer = document.getElementsByClassName("nav-buttons")
+        navbuttonscontainer.appendChild(cloneofbutton)
+      }
+      fetch("https://catosoriginal.github.io/go/docs/pages" + toString(docname)) 
+  .then(res => res.text())
+  .then(md => {
+    document.getElementById("content").innerHTML = marked.parse(md);
+  })
+  .catch(err => console.error("Error while loading MD:", err));
+    }
+   })
+</script>
 </head>
 <body>
 
 <nav id="nav">
   <div class="nav-buttons">
-    <a href="#">EXAMPLE1</a>
+    <a id="navbutton_EXAMPLE"href="#">EXAMPLE1</a>
   </div>
 </nav>
 
 <div id="main-content">
   <header id="header">Documentations</header>
-  <main id="content">
+  <main id="content"> 
     Loading content...
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec accumsan, urna a tincidunt malesuada, nisl elit tempor nisi, vel tempus lacus metus eget urna.</p>
-    <p>More content here...</p>
-    <p>Even more content so you can scroll if needed...</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec accumsan, urna a tincidunt malesuada, nisl elit tempor nisi, vel tempus lacus metus eget urna.</p>
   </main>
 </div>
 
