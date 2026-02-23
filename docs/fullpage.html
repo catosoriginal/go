@@ -97,13 +97,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return res.json();
     })
     .then(data => {
-      // Генерация навигации
+
       data.forEach(item => {
         if (item.listed) {
           const btn = navTemplate.cloneNode(true);
           btn.id = "navbutton_" + String(item.displayname).replace(/\s+/g, "_");
           btn.textContent = String(item.displayname);
-          btn.href = "#"; // не перезагружает страницу
+          btn.href = "#";
           btn.style.display = "block";
           btn.addEventListener("click", () => loadDoc(item));
           navContainer.appendChild(btn);
