@@ -11,6 +11,7 @@
     background-color: rgb(68, 68, 68);
     display: flex;
     height: 100vh;
+    overflow: hidden;
   }
 
   #nav {
@@ -40,6 +41,7 @@
     background-color: rgb(2, 2, 2);
     border-radius: 10px;
     transition: background-color 0.2s;
+    cursor: pointer;
   }
 
   .nav-buttons a:hover {
@@ -60,60 +62,79 @@
     border-radius: 15px;
     padding: 20px;
     margin-bottom: 20px;
-    font-size:larger;
+    font-size: larger;
+    word-break: break-word;
   }
-  
 </style>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script>
-   let jsondoc = none;
-   let docname = new URLSearchParams(window.location.search).get("docname");
-   if (docname) {
-    console.log("got docname")
-   }
-   document.getElementById("navbutton_EXAMPLE").style.display = "none"
-   fetch("https://catosoriginal.github.io/go/docs/list.json")
-   .then(res => {
-    if (!res.ok) throw new Error("Failed to load JSON");
-    return res.json();
-   })
-   .then(data => {
-    jsondoc = data[docname]
-    document.getElementById("header").textContent = toString(jsondoc.displayname)
-    for (const item of data) {
-      if (item.listed == true) {
-        const cloneofbutton = document.getElementById("navbutton_EXAMPLE").cloneNode(true);
-        cloneofbutton.id = "navbutton_" + String(item.name);
-        cloneofbutton.textContent = String(item.displayname)
-        cloneofbutton.href = String(item.link)
-        cloneofbutton.style.display = "block"
-        const navbuttonscontainer = document.getElementsByClassName("nav-buttons")[0];
-        navbuttonscontainer.appendChild(cloneofbutton)
-      }
-      fetch("https://catosoriginal.github.io/go/docs/pages" + String(docname) + ".md") 
-  .then(res => res.text())
-  .then(md => {
-    document.getElementById("content").innerHTML = marked.parse(md);
-  })
-  .catch(err => console.error("Error while loading MD:", err));
-    }
-   })
-</script>
 </head>
 <body>
 
 <nav id="nav">
   <div class="nav-buttons">
-    <a id="navbutton_EXAMPLE"href="#">EXAMPLE1</a>
+    <a id="navbutton_TEMPLATE" href="#">EXAMPLE1</a>
   </div>
 </nav>
 
 <div id="main-content">
   <header id="header">Documentations</header>
-  <main id="content"> 
-    Loading content...
-  </main>
+  <main id="content">Loading content...</main>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const docname = new URLSearchParams(window.location.search).get("docname");
+  const navTemplate = document.getElementById("navbutton_TEMPLATE");
+  navTemplate.style.display = "none";
+  const navContainer = document.getElementsByClassName("nav-buttons")[0];
+  const contentEl = document.getElementById("content");
+  const headerEl = document.getElementById("header");
+
+  fetch("https://catosoriginal.github.io/go/docs/list.json")
+    .then(res => {
+      if (!res.ok) throw new Error("Failed to load JSON");
+      return res.json();
+    })
+    .then(data => {
+      // Генерация навигации
+      data.forEach(item => {
+        if (item.listed) {
+          const btn = navTemplate.cloneNode(true);
+          btn.id = "navbutton_" + String(item.displayname).replace(/\s+/g, "_");
+          btn.textContent = String(item.displayname);
+          btn.href = "#"; // не перезагружает страницу
+          btn.style.display = "block";
+          btn.addEventListener("click", () => loadDoc(item));
+          navContainer.appendChild(btn);
+        }
+      });
+
+      let initialDoc = data.find(item => item.displayname === docname || item.link === docname);
+      if (!initialDoc && data.length > 0) initialDoc = data[0]; 
+      if (initialDoc) loadDoc(initialDoc);
+    })
+    .catch(err => console.error("Error loading JSON:", err));
+
+  function loadDoc(item) {
+    headerEl.textContent = item.displayname;
+    contentEl.innerHTML = "Loading content...";
+    fetch("https://catosoriginal.github.io/go/docs/pages/" + item.link)
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to load Markdown");
+        return res.text();
+      })
+      .then(md => {
+        contentEl.innerHTML = marked.parse(md);
+      })
+      .catch(err => {
+        console.error("Error loading Markdown:", err);
+        contentEl.innerHTML = "Failed to load content.";
+      });
+  }
+
+});
+</script>
 
 </body>
 </html>
