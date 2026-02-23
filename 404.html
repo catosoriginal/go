@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="eng"> 
 <body>
-    <p id="mtext", style="font-size: 50px;">Loading, please wait. If it takes over 5s, the server is sleeping. Please wait ~30s.</p>
+    <div id="loader-container">
+    <p class="text maintext" id="mtext">Loading, please wait. If it takes over 5s, the server is sleeping. Please wait ~30s.</p>
+    <img class="text statusgif" id="mstatusgif" src="assets/loading.gif">
+    <p class="text statustext" id="mstatus">Loading</p>
+</div>
     <style>
-         #mtext {
-    font-size: 5vw;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: 90%;
-    max-width: 90%;
-    word-wrap: break-word;
-    line-height: 1.2;
-    white-space: normal;
-  }
+        #loader-container {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;   
+  justify-content: center; 
+  height: 100vh;    
+  gap: 20px;           
+  text-align: center;
+}
+
+.statustext {
+    color:rgb(255, 127, 80);
+    background-color: beige;
+}
+
+.text {
+  font-size: 5vw;
+  max-width: 90%;
+  word-wrap: break-word;
+  line-height: 1.2;
+  white-space: normal;
+}
     </style>
     <script>
         console.warn("\nWarning!\nI am not responsible for the websites you visit through my site.\nIf you see some bad sites, please report it to me: https://catosoriginal.github.io/go/report\n")
@@ -24,6 +37,9 @@ let redirectLinks = {}
 fetch("publiclinks.json")
   .then(res => {
     if (!res.ok) throw new Error("Failed to load JSON");
+    document.getElementById('statustext').style.color = rgb(255, 80, 80);
+    document.getElementById('statustext').textContent = "Server Error";
+    document.getElementById('statusgif').style.visibility = "hidden";
     return res.json();
   })
   .then(data => {
@@ -44,6 +60,8 @@ fetch("publiclinks.json")
 
     if (redirectLinks[redirectKey]) {
         document.getElementById('mtext').textContent = 'Redirecting to ' + redirectLinks[redirectKey];
+        document.getElementById('statustext').style.color = rgb(50, 205, 50);
+        document.getElementById('statustext').textContent = "Successfully!";
         window.location.href = redirectLinks[redirectKey];
     } else {
         const serverlink = "https://go-server-idym.onrender.com/geturl";
@@ -61,11 +79,16 @@ fetch("publiclinks.json")
         .then(result => {
             console.log("Taked URL:", result.url);
             document.getElementById('mtext').textContent = 'Redirecting to ' + result.url;
+            document.getElementById('statustext').style.color = rgb(50, 205, 50);
+            document.getElementById('statustext').textContent = "Successfully!";
             window.location.href = result.url;
         })
         .catch(err => {
             console.error("Request Error:", err.error);
             document.getElementById('mtext').textContent = err.error || "undefined error";
+            document.getElementById('statustext').style.color = rgb(255, 80, 80);
+            document.getElementById('statustext').textContent = "Server Error";
+            document.getElementById('statusgif').style.visibility = "hidden";
         });
     }
 
@@ -73,6 +96,9 @@ fetch("publiclinks.json")
   .catch(err => {
     console.error("Error while loading JSON:", err);
     document.getElementById('mtext').textContent = "Failed to load links";
+    document.getElementById('statustext').style.color = rgb(255, 80, 80);
+    document.getElementById('statustext').textContent = "Server Error";
+    document.getElementById('statusgif').style.visibility = "hidden";
   });
 </script>
 </body>
