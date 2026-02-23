@@ -9,21 +9,22 @@
 </div>
     <style>
         #loader-container {
-      display: flex;
+      display: inline-flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 1.5em;
       text-align: center;
-      max-width: 500px;
-      margin: 50px auto;
-      padding: 30px 25px;
+      max-width: 90vw;
+      min-width: 200px;
+      padding: 2em;
       background-color: #fff5ee;
-      border-radius: 25px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      border-radius: 2em;
+      box-shadow: 0 0.5em 2em rgba(0,0,0,0.15);
       box-sizing: border-box;
       transition: all 0.3s ease;
     }
+
     .maintext {
       font-size: clamp(16px, 4vw, 28px);
       color: #333;
@@ -31,34 +32,38 @@
       word-wrap: break-word;
       margin: 0;
     }
+
     .statusgif {
-      width: 80px;
-      height: 80px;
+      width: clamp(50px, 10vw, 120px);
+      height: auto;
+      max-height: 25vh;
       object-fit: contain;
       transition: all 0.3s ease;
     }
+
     .statustext {
       font-size: clamp(14px, 3vw, 22px);
       font-weight: bold;
       color: rgb(255, 127, 80);
       background-color: #fff0d1;
-      padding: 10px 20px;
-      border-radius: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 0.6em 1.5em;
+      border-radius: 1.5em;
+      box-shadow: 0 0.3em 1em rgba(0,0,0,0.1);
       margin: 0;
       transition: all 0.3s ease;
     }
+
     .hidden {
       display: none !important;
     }
+
     @media (max-width: 400px) {
       #loader-container {
-        padding: 20px 15px;
-        gap: 15px;
+        padding: 1.5em 1em;
+        gap: 1em;
       }
       .statusgif {
-        width: 60px;
-        height: 60px;
+        width: clamp(40px, 15vw, 80px);
       }
     }
     </style>
@@ -131,7 +136,7 @@ fetch("https://catosoriginal.github.io/go/publiclinks.json")
     console.error("Error while loading JSON:", err);
     document.getElementById('mtext').textContent = "Failed to load links";
     document.getElementById('mstatus').style.color = "rgb(255, 80, 80)";
-    document.getElementById('mstatus').textContent = "Server Error";
+    document.getElementById('mstatus').textContent = "Parsing Error";
     document.getElementById('mstatusgif').style.display = "none";
   });
 </script>
