@@ -80,7 +80,7 @@
     for (const item of data) {
       if (item.listed == true) {
         const cloneofbutton = document.getElementById("navbutton_EXAMPLE").cloneNode(true);
-        cloneofbutton.id = "navbutton_" + String(item);
+        cloneofbutton.id = "navbutton_" + String(item.name);
         cloneofbutton.textContent = String(item.displayname)
         cloneofbutton.href = String(item.link)
         cloneofbutton.style.display = "block"
