@@ -81,13 +81,13 @@
       if (item.listed == true) {
         const cloneofbutton = document.getElementById("navbutton_EXAMPLE").cloneNode(true);
         cloneofbutton.id = "navbutton_" + String(item);
-        cloneofbutton.textContent = ttring(item.displayname)
+        cloneofbutton.textContent = String(item.displayname)
         cloneofbutton.href = String(item.link)
         cloneofbutton.style.display = "block"
         const navbuttonscontainer = document.getElementsByClassName("nav-buttons")[0];
         navbuttonscontainer.appendChild(cloneofbutton)
       }
-      fetch("https://catosoriginal.github.io/go/docs/pages" + String(docname)) 
+      fetch("https://catosoriginal.github.io/go/docs/pages" + String(docname) + ".md") 
   .then(res => res.text())
   .then(md => {
     document.getElementById("content").innerHTML = marked.parse(md);
