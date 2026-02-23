@@ -37,9 +37,9 @@ let redirectLinks = {}
 fetch("publiclinks.json")
   .then(res => {
     if (!res.ok) throw new Error("Failed to load JSON");
-    document.getElementById('statustext').style.color = rgb(255, 80, 80);
-    document.getElementById('statustext').textContent = "Server Error";
-    document.getElementById('statusgif').style.visibility = "hidden";
+    document.getElementById('mstatus').style.color = rgb(255, 80, 80);
+    document.getElementById('mstatus').textContent = "Server Error";
+    document.getElementById('mstatusgif').style.visibility = "hidden";
     return res.json();
   })
   .then(data => {
@@ -60,8 +60,9 @@ fetch("publiclinks.json")
 
     if (redirectLinks[redirectKey]) {
         document.getElementById('mtext').textContent = 'Redirecting to ' + redirectLinks[redirectKey];
-        document.getElementById('statustext').style.color = rgb(50, 205, 50);
-        document.getElementById('statustext').textContent = "Successfully!";
+        document.getElementById('mstatus').style.color = rgb(50, 205, 50);
+        document.getElementById('mstatus').textContent = "Successfully!";
+        document.getElementById('mstatusgif').style.visibility = "hidden";
         window.location.href = redirectLinks[redirectKey];
     } else {
         const serverlink = "https://go-server-idym.onrender.com/geturl";
@@ -79,16 +80,17 @@ fetch("publiclinks.json")
         .then(result => {
             console.log("Taked URL:", result.url);
             document.getElementById('mtext').textContent = 'Redirecting to ' + result.url;
-            document.getElementById('statustext').style.color = rgb(50, 205, 50);
-            document.getElementById('statustext').textContent = "Successfully!";
+            document.getElementById('mstatus').style.color = rgb(50, 205, 50);
+            document.getElementById('mstatus').textContent = "Successfully!";
+            document.getElementById('mstatusgif').style.visibility = "hidden";
             window.location.href = result.url;
         })
         .catch(err => {
             console.error("Request Error:", err.error);
             document.getElementById('mtext').textContent = err.error || "undefined error";
-            document.getElementById('statustext').style.color = rgb(255, 80, 80);
-            document.getElementById('statustext').textContent = "Server Error";
-            document.getElementById('statusgif').style.visibility = "hidden";
+            document.getElementById('mstatus').style.color = rgb(255, 80, 80);
+            document.getElementById('mstatus').textContent = "Server Error";
+            document.getElementById('mstatusgif').style.visibility = "hidden";
         });
     }
 
@@ -96,9 +98,9 @@ fetch("publiclinks.json")
   .catch(err => {
     console.error("Error while loading JSON:", err);
     document.getElementById('mtext').textContent = "Failed to load links";
-    document.getElementById('statustext').style.color = rgb(255, 80, 80);
-    document.getElementById('statustext').textContent = "Server Error";
-    document.getElementById('statusgif').style.visibility = "hidden";
+    document.getElementById('mstatus').style.color = rgb(255, 80, 80);
+    document.getElementById('mstatus').textContent = "Server Error";
+    document.getElementById('mstatusgif').style.visibility = "hidden";
   });
 </script>
 </body>
