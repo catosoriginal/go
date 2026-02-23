@@ -68,7 +68,7 @@
 <script>
    let docname = new URLSearchParams(window.location.search).get("docname");
    if (docname) {
-    document.getElementById("header").textContent = toString(docname)
+    document.getElementById("header").textContent = String(docname)
    }
    document.getElementById("navbutton_EXAMPLE").style.display = "none"
    fetch("https://catosoriginal.github.io/go/docs/list.json")
@@ -80,14 +80,14 @@
     for (const item of data) {
       if (item.listed == true) {
         const cloneofbutton = document.getElementById("navbutton_EXAMPLE").cloneNode(true);
-        cloneofbutton.id = "navbutton_" + toString(item);
-        cloneofbutton.textContent = toString(item.displayname)
-        cloneofbutton.href = toString(item.link)
-        cloneofbutton.display = "block"
-        const navbuttonscontainer = document.getElementsByClassName("nav-buttons")
+        cloneofbutton.id = "navbutton_" + String(item);
+        cloneofbutton.textContent = ttring(item.displayname)
+        cloneofbutton.href = String(item.link)
+        cloneofbutton.style.display = "block"
+        const navbuttonscontainer = document.getElementsByClassName("nav-buttons")[0];
         navbuttonscontainer.appendChild(cloneofbutton)
       }
-      fetch("https://catosoriginal.github.io/go/docs/pages" + toString(docname)) 
+      fetch("https://catosoriginal.github.io/go/docs/pages" + String(docname)) 
   .then(res => res.text())
   .then(md => {
     document.getElementById("content").innerHTML = marked.parse(md);
