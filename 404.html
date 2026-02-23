@@ -38,7 +38,7 @@
         console.warn("\nWarning!\nI am not responsible for the websites you visit through my site.\nIf you see some bad sites, please report it to me: https://catosoriginal.github.io/go/report\n")
 let redirectLinks = {}
 
-fetch("publiclinks.json")
+fetch("https://catosoriginal.github.io/go/publiclinks.json")
   .then(res => {
     if (!res.ok) throw new Error("Failed to load JSON");
     document.getElementById('mstatus').style.color = "rgb(255, 80, 80)";
