@@ -43,7 +43,7 @@ fetch("publiclinks.json")
     if (!res.ok) throw new Error("Failed to load JSON");
     document.getElementById('mstatus').style.color = "rgb(255, 80, 80)";
     document.getElementById('mstatus').textContent = "Server Error";
-    document.getElementById('mstatusgif').style.display = none;
+    document.getElementById('mstatusgif').style.display = "none";
     return res.json();
   })
   .then(data => {
@@ -66,7 +66,7 @@ fetch("publiclinks.json")
         document.getElementById('mtext').textContent = 'Redirecting to ' + redirectLinks[redirectKey];
         document.getElementById('mstatus').style.color = "rgb(50, 205, 50)";
         document.getElementById('mstatus').textContent = "Successfully!";
-        document.getElementById('mstatusgif').style.display = none;
+        document.getElementById('mstatusgif').style.display = "none";
         window.location.href = redirectLinks[redirectKey];
     } else {
         const serverlink = "https://go-server-idym.onrender.com/geturl";
@@ -86,7 +86,7 @@ fetch("publiclinks.json")
             document.getElementById('mtext').textContent = 'Redirecting to ' + result.url;
             document.getElementById('mstatus').style.color = "rgb(50, 205, 50)";
             document.getElementById('mstatus').textContent = "Successfully!";
-            document.getElementById('mstatusgif').style.display = none;
+            document.getElementById('mstatusgif').style.display = "none";
             window.location.href = result.url;
         })
         .catch(err => {
@@ -94,7 +94,7 @@ fetch("publiclinks.json")
             document.getElementById('mtext').textContent = err.error || "undefined error";
             document.getElementById('mstatus').style.color = "rgb(255, 80, 80)";
             document.getElementById('mstatus').textContent = "Server Error";
-            document.getElementById('mstatusgif').style.display = none;
+            document.getElementById('mstatusgif').style.display = "none";
         });
     }
 
@@ -104,7 +104,7 @@ fetch("publiclinks.json")
     document.getElementById('mtext').textContent = "Failed to load links";
     document.getElementById('mstatus').style.color = "rgb(255, 80, 80)";
     document.getElementById('mstatus').textContent = "Server Error";
-    document.getElementById('mstatusgif').style.display = none;
+    document.getElementById('mstatusgif').style.display = "none";
   });
 </script>
 </body>
