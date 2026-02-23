@@ -3,7 +3,7 @@
 <body>
     <title>GO Redirect</title>
     <div id="loader-container">
-    <p class="text maintext" id="mtext">If this message does not disappear within 5 seconds, the server is currently sleeping.<br>Please wait about 30 seconds for it to wake up and load.</p>
+    <p class="text maintext" id="mtext">Wait...</p>
     <img class="text statusgif" id="mstatusgif" src="assets/loading.gif">
     <p class="text statustext" id="mstatus">Loading</p>
 </div>
@@ -104,12 +104,16 @@ fetch("https://catosoriginal.github.io/go/publiclinks.json")
     }
 
     if (redirectLinks[redirectKey]) {
+        document.getElementById('mtext').textContent = 'Getting URL from client...';
         document.getElementById('mtext').textContent = 'Redirecting to ' + redirectLinks[redirectKey];
         document.getElementById('mstatus').style.color = "rgb(50, 205, 50)";
         document.getElementById('mstatus').textContent = "Successfully!";
         document.getElementById('mstatusgif').style.display = "none";
         window.location.href = redirectLinks[redirectKey];
     } else {
+        document.getElementById('mtext').textContent = 'Getting URL from server... (If you wait more than 10 seconds, it means the server is asleep. You’ll need to wait about 30 seconds. Sorry!)';
+        document.getElementById('mstatus').style.color = "rgb(0, 0, 255)";
+        document.getElementById('mstatus').textContent = "Requesting server";
         const serverlink = "https://go-server-idym.onrender.com/geturl";
         const data = { key: redirectKey, password: password };
 

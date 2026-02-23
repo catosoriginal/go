@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentations</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: rgb(68, 68, 68);
+    display: flex;
+    height: 100vh;
+  }
+
+  #nav {
+    background-color: aliceblue;
+    border-radius: 15px;
+    width: 200px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* промежуток между кнопками */
+    box-sizing: border-box;
+  }
+
+  .nav-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* промежуток между кнопками */
+  }
+
+  .nav-buttons a {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    background-color: rgb(2, 2, 2);
+    border-radius: 10px;
+    transition: background-color 0.2s;
+  }
+
+  .nav-buttons a:hover {
+    background-color: rgb(122, 101, 101);
+  }
+
+  #main-content {
+    flex-grow: 1;
+    padding: 20px;
+    color: beige;
+    overflow-y: auto;
+  }
+
+  #header {
+    text-align: center;
+    color: beige;
+    background-color: black;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-buttons">
+    <a href="#">EXAMPLE1</a>
+  </div>
+</nav>
+
+<div id="main-content">
+  <header id="header">Documentations</header>
+  <main id="content">
+    Loading content...
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec accumsan, urna a tincidunt malesuada, nisl elit tempor nisi, vel tempus lacus metus eget urna.</p>
+    <p>More content here...</p>
+    <p>Even more content so you can scroll if needed...</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec accumsan, urna a tincidunt malesuada, nisl elit tempor nisi, vel tempus lacus metus eget urna.</p>
+  </main>
+</div>
+
+</body>
+</html>
