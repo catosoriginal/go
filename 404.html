@@ -136,7 +136,7 @@ fetch("https://catosoriginal.github.io/go/publiclinks.json")
         })
         .catch(err => {
             console.error("Request Error:", err.error);
-            document.getElementById('mtext').textContent = err.error || "undefined error";
+            document.getElementById('mtext').textContent = err.error || "Unknow error from server. Try reloading page.";
             document.getElementById('mstatus').style.color = "rgb(255, 80, 80)";
             document.getElementById('mstatus').textContent = "Error, server responded";
             document.getElementById('mstatusgif').style.display = "none";
