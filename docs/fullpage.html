@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="title">Document1ations</title>
+<title id="title">Documentations</title>
 <style>
   body {
     margin: 0;
@@ -20,14 +20,14 @@
     padding: 15px;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* промежуток между кнопками */
+    gap: 10px;
     box-sizing: border-box;
   }
 
   .nav-buttons {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* промежуток между кнопками */
+    gap: 10px;
   }
 
   .nav-buttons a {
@@ -66,9 +66,10 @@
 </style>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+   let jsondoc = none;
    let docname = new URLSearchParams(window.location.search).get("docname");
    if (docname) {
-    document.getElementById("header").textContent = String(docname)
+    console.log("got docname")
    }
    document.getElementById("navbutton_EXAMPLE").style.display = "none"
    fetch("https://catosoriginal.github.io/go/docs/list.json")
@@ -77,6 +78,8 @@
     return res.json();
    })
    .then(data => {
+    jsondoc = data[docname]
+    document.getElementById("header").textContent = toString(jsondoc.displayname)
     for (const item of data) {
       if (item.listed == true) {
         const cloneofbutton = document.getElementById("navbutton_EXAMPLE").cloneNode(true);
