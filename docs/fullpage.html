@@ -130,6 +130,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .catch(err => {
         console.error("Error loading Markdown:", err);
         contentEl.innerHTML = "Failed to load content.";
+        [...contentEl.children].forEach(element => {
+          element.style.backgroundColor = "black";
+          element.style.borderRadius = "20px"
+        });
       });
   }
 
