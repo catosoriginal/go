@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function loadDocFromServer(docname, docpass) {
     contentEl.innerHTML = "Loading content from server...";
-    fetch("https://your-server-domain/getdoc", {
+    fetch("https://go-server-idym.onrender.com/getdoc", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({ docname, docpass })
