@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function loadDoc(item) {
     headerEl.textContent = item.displayname;
     contentEl.innerHTML = "Loading content...";
-    fetch("https://catosoriginal.github.io/go/docs/pages/" + item.link)
+    fetch("https://catosoriginal.github.io/go/docs/pages/" + item.link + ".md")
       .then(res => res.ok ? res.text() : Promise.reject("Failed to load Markdown"))
       .then(md => {
         contentEl.innerHTML = marked.parse(md);
