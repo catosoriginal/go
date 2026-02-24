@@ -48,6 +48,10 @@
     background-color: rgb(122, 101, 101);
   }
 
+  .nav-buttons a.active {
+    background-color: rgb(100, 100, 255);
+  }
+
   #main-content {
     flex-grow: 1;
     padding: 20px;
@@ -92,12 +96,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const contentEl = document.getElementById("content");
   const headerEl = document.getElementById("header");
 
+  function styleContent(el) {
+    el.style.padding = "16px 20px";
+    el.style.color = "rgb(248,248,255)";
+    el.style.fontSize = "17px";
+    el.style.lineHeight = "1.7";
+    el.style.fontFamily = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif";
+    el.style.textRendering = "optimizeLegibility";
+    el.style.wordBreak = "break-word";
+  }
+
   function loadDocFromServer(docname, docpass) {
     contentEl.innerHTML = "Loading content from server...";
     fetch("https://your-server-domain/getdoc", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({ docname: docname, docpass: docpass })
+      body: JSON.stringify({ docname, docpass })
     })
     .then(res => res.ok ? res.json() : Promise.reject("Failed to fetch from server"))
     .then(data => {
@@ -107,68 +121,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       headerEl.textContent = data.displayname;
       contentEl.innerHTML = marked.parse(data.content);
-      [...contentEl.children].forEach(el => {
-        el.style.padding = "16px 20px";
-        el.style.color = "rgb(248,248,255)";
-        el.style.fontSize = "17px";
-        el.style.lineHeight = "1.7";
-        el.style.fontFamily = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif";
-        el.style.textRendering = "optimizeLegibility";
-        el.style.wordBreak = "break-word";                                        
-      });  
+      [...contentEl.children].forEach(styleContent);
     })
     .catch(() => {
       contentEl.innerHTML = "Failed to load content.";
     });
   }
-
-  fetch("https://catosoriginal.github.io/go/docs/list.json")
-    .then(res => res.ok ? res.json() : Promise.reject("Failed to load JSON"))
-    .then(data => {
-
-      data.forEach(item => {
-        if (item.listed) {
-          const btn = navTemplate.cloneNode(true);
-          btn.id = "navbutton_" + String(item.displayname).replace(/\s+/g, "_");
-          btn.textContent = String(item.displayname);
-          btn.href = "#";
-          btn.style.display = "block";
-          btn.addEventListener("click", () => {
-            loadDoc(item);
-            navContainer.querySelectorAll('a').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-          });
-          navContainer.appendChild(btn);
-        }
-      });
-//
-      let initialDoc = null;
-
-if (docname) {
-  initialDoc = data.find(doc => doc.name === docname);
-}
-
-if (!initialDoc && docname) {
-  initialDoc = {
-    link: docname,
-    displayname: docname
-  };
-}
-
-if (!initialDoc && data.length > 0) {
-  initialDoc = data[0];
-}
-
-if (initialDoc) {
-  loadDoc(initialDoc);
-}
-//
-      if (initialDoc) loadDoc(initialDoc);
-
-    })
-    .catch(() => {
-      contentEl.innerHTML = "Failed to load documentation list.";с
-    });
 
   function loadDoc(item) {
     headerEl.textContent = item.displayname;
@@ -177,20 +135,58 @@ if (initialDoc) {
       .then(res => res.ok ? res.text() : Promise.reject("Failed to load Markdown"))
       .then(md => {
         contentEl.innerHTML = marked.parse(md);
-        [...contentEl.children].forEach(el => {
-          el.style.padding = "16px 20px";
-          el.style.color = "rgb(248,248,255)"; 
-          el.style.fontSize = "17px";
-          el.style.lineHeight = "1.7";
-          el.style.fontFamily = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif";
-          el.style.textRendering = "optimizeLegibility";
-          el.style.wordBreak = "break-word";     
-        });
+        [...contentEl.children].forEach(styleContent);
       })
       .catch(() => {
-        loadDocFromServer(item.link);
+        loadDocFromServer(item.link, docpassword);
       });
   }
+
+  function initNavigation(data) {
+    data.forEach(item => {
+      if (item.listed) {
+        const btn = navTemplate.cloneNode(true);
+        btn.id = "navbutton_" + String(item.displayname).replace(/\s+/g, "_");
+        btn.textContent = item.displayname;
+        btn.href = "#";
+        btn.style.display = "block";
+        btn.addEventListener("click", () => {
+          loadDoc(item);
+          navContainer.querySelectorAll('a').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        });
+        navContainer.appendChild(btn);
+      }
+    });
+
+    let initialDoc = null;
+
+    if (docname) {
+      initialDoc = data.find(doc => doc.name === docname);
+    }
+
+    if (!initialDoc && docname) {
+      initialDoc = {
+        link: docname,
+        displayname: docname
+      };
+    }
+
+    if (!initialDoc && data.length > 0) {
+      initialDoc = data[0];
+    }
+
+    if (initialDoc) {
+      loadDoc(initialDoc);
+    }
+  }
+
+  fetch("https://catosoriginal.github.io/go/docs/list.json")
+    .then(res => res.ok ? res.json() : Promise.reject("Failed to load JSON"))
+    .then(initNavigation)
+    .catch(() => {
+      contentEl.innerHTML = "Failed to load documentation list.";
+    });
 
 });
 </script>
