@@ -84,7 +84,8 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  const docname = new URLSearchParams(window.location.search).get("docname");
+  const docname = new URLSearchParams(window.location.search).get("docname") = null;
+  const docpassword = new URLSearchParams(window.location.search).get("docpass") = null;
   const navTemplate = document.getElementById("navbutton_TEMPLATE");
   navTemplate.style.display = "none";
   const navContainer = document.getElementsByClassName("nav-buttons")[0];
