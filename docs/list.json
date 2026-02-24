@@ -1,5 +1,11 @@
 [
     {
+        "name": "welcome",
+        "listed": true,
+        "displayname": "Welcome",
+        "link": "welcome.md"
+    },
+    {
         "name": "report",
         "listed": true,
         "displayname": "Report",
