@@ -141,11 +141,28 @@ document.addEventListener("DOMContentLoaded", () => {
           navContainer.appendChild(btn);
         }
       });
+//
+      let initialDoc = null;
 
-      let initialDoc = data.find(item => item.displayname === docname || item.link === docname);
-      if (!initialDoc && docname) initialDoc = { link: docname, displayname: docname };
-      if (!initialDoc && data.length > 0) initialDoc = data[0];
+if (docname) {
+  initialDoc = data.find(doc => doc.name === docname);
+}
 
+if (!initialDoc && docname) {
+  initialDoc = {
+    link: docname,
+    displayname: docname
+  };
+}
+
+if (!initialDoc && data.length > 0) {
+  initialDoc = data[0];
+}
+
+if (initialDoc) {
+  loadDoc(initialDoc);
+}
+//
       if (initialDoc) loadDoc(initialDoc);
 
     })
