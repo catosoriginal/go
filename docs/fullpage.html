@@ -92,10 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const headerEl = document.getElementById("header");
 
   fetch("https://catosoriginal.github.io/go/docs/list.json")
-    .then(res => {
-      if (!res.ok) throw new Error("Failed to load JSON");
-      return res.json();
-    })
+    .then(res => res.ok ? res.json() : Promise.reject("Failed to load JSON"))
     .then(data => {
 
       data.forEach(item => {
@@ -105,35 +102,41 @@ document.addEventListener("DOMContentLoaded", () => {
           btn.textContent = String(item.displayname);
           btn.href = "#";
           btn.style.display = "block";
-          btn.addEventListener("click", () => loadDoc(item));
+          btn.addEventListener("click", () => {
+            loadDoc(item);
+            navContainer.querySelectorAll('a').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+          });
           navContainer.appendChild(btn);
         }
       });
 
       let initialDoc = data.find(item => item.displayname === docname || item.link === docname);
-      if (!initialDoc && data.length > 0) initialDoc = data[0]; 
+      if (!initialDoc && data.length > 0) initialDoc = data[0];
       if (initialDoc) loadDoc(initialDoc);
+
     })
-    .catch(err => console.error("Error loading JSON:", err));
+    .catch(err => {
+      console.error("Error loading JSON:", err);
+      contentEl.innerHTML = "Failed to load documentation list.";
+    });
 
   function loadDoc(item) {
     headerEl.textContent = item.displayname;
     contentEl.innerHTML = "Loading content...";
     fetch("https://catosoriginal.github.io/go/docs/pages/" + item.link)
-      .then(res => {
-        if (!res.ok) throw new Error("Failed to load Markdown");
-        return res.text();
-      })
+      .then(res => res.ok ? res.text() : Promise.reject("Failed to load Markdown"))
       .then(md => {
         contentEl.innerHTML = marked.parse(md);
+        [...contentEl.children].forEach(el => {
+          el.style.backgroundColor = "black";
+          el.style.borderRadius = "20px";
+          el.style.padding = "10px";
+        });
       })
       .catch(err => {
         console.error("Error loading Markdown:", err);
         contentEl.innerHTML = "Failed to load content.";
-        [...contentEl.children].forEach(element => {
-          element.style.backgroundColor = "black";
-          element.style.borderRadius = "20px"
-        });
       });
   }
 
