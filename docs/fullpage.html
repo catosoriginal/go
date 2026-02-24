@@ -91,6 +91,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const contentEl = document.getElementById("content");
   const headerEl = document.getElementById("header");
 
+  function loadDocFromServer(docname, docpass = null) {
+    contentEl.innerHTML = "Loading content from server...";
+    fetch("https://your-server-domain/getdoc", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ docname: docname, docpass: docpass })
+    })
+    .then(res => res.ok ? res.json() : Promise.reject("Failed to fetch from server"))
+    .then(data => {
+      if (data.error) {
+        contentEl.innerHTML = "Failed to load content.";
+        return;
+      }
+      headerEl.textContent = data.displayname;
+      contentEl.innerHTML = marked.parse(data.content);
+      [...contentEl.children].forEach(el => {
+        el.style.backgroundColor = "black";
+        el.style.borderRadius = "20px";
+        el.style.padding = "10px";
+      });
+    })
+    .catch(() => {
+      contentEl.innerHTML = "Failed to load content.";
+    });
+  }
+
   fetch("https://catosoriginal.github.io/go/docs/list.json")
     .then(res => res.ok ? res.json() : Promise.reject("Failed to load JSON"))
     .then(data => {
@@ -112,12 +138,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       let initialDoc = data.find(item => item.displayname === docname || item.link === docname);
+      if (!initialDoc && docname) initialDoc = { link: docname, displayname: docname };
       if (!initialDoc && data.length > 0) initialDoc = data[0];
+
       if (initialDoc) loadDoc(initialDoc);
 
     })
-    .catch(err => {
-      console.error("Error loading JSON:", err);
+    .catch(() => {
       contentEl.innerHTML = "Failed to load documentation list.";
     });
 
@@ -134,9 +161,8 @@ document.addEventListener("DOMContentLoaded", () => {
           el.style.padding = "10px";
         });
       })
-      .catch(err => {
-        console.error("Error loading Markdown:", err);
-        contentEl.innerHTML = "Failed to load content.";
+      .catch(() => {
+        loadDocFromServer(item.link);
       });
   }
 
