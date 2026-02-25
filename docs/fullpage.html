@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
     contentEl.innerHTML = "Loading content from server...";
     fetch("https://go-server-idym.onrender.com/getdoc", {
       method: "POST",
-      headers: {"Content-Type": "application/json"},
+      headers: {"Content-Type": "application/vnd.github.v3.raw"},
       body: JSON.stringify({ docname, docpass })
     })
     .then(res => res.ok ? res.json() : Promise.reject("Failed to fetch from server"))
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function loadDoc(item) {
     headerEl.textContent = item.displayname;
     contentEl.innerHTML = "Loading content...";
-    fetch("https://catosoriginal.github.io/go/docs/pages/" + item.link + ".md")
+    fetch("https://catosoriginal.github.io/go/docs/pages/" + item.link)
       .then(res => res.ok ? res.text() : Promise.reject("Failed to load Markdown"))
       .then(md => {
         contentEl.innerHTML = marked.parse(md);
