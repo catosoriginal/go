@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
         [...contentEl.children].forEach(styleContent);
       })
       .catch(() => {
-        loadDocFromServer(item.link, docpassword);
+        loadDocFromServer(docname, docpassword);
       });
   }
 
